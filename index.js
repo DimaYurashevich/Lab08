@@ -8,7 +8,8 @@ const errors = require('./utils/errors');
 
 const dbcontext = require('./context/db')(Sequelize, config);
 const userService = require('./services/user')(dbcontext.user, errors);
-const apiController = require('./controllers/api')(userService);
+const authService = require('./services/auth')(dbcontext.user, errors);
+const apiController = require('./controllers/api')(userService, authService);
 
 const app = express();
 
