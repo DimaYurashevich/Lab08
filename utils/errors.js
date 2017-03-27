@@ -15,6 +15,11 @@ express.response.error = function(error) {
 };
 
 module.exports = {
+    invalidPassword:{
+        message: 'invalidPassword',
+        code: 'invalid_password',
+        status: 400
+    },
     invalidId: {
         message: 'Invalid id',
         code: 'invalid_id',

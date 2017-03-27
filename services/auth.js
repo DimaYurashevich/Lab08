@@ -1,4 +1,5 @@
 var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 const saltRounds = 10;
 module.exports = (userRepository, errors) => {
     return {
@@ -39,6 +40,17 @@ module.exports = (userRepository, errors) => {
     }
     function login(data)
     {
-        return null;
+        return new Promise((resolve, reject) => {
+            userRepository.findOne({where:{login: data.login},
+                                    attributes: ['id','login','password']})
+            .then(user=>{
+                bcrypt.compare(data.password, user.password , function(err, rez){
+                    if (rez==true){
+                        resolve(jwt.sign({ __user_id: user.id,
+                                            __user_login: user.login}, 'pskpdm'));}
+                    else    reject(errors.invalidPassword)
+                });
+            })
+        });
     }
 }

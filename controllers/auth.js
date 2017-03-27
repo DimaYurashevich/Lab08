@@ -5,7 +5,19 @@ module.exports = (authService) => {
 
     router.post('/register',(req, res) =>
     {
-        authService.register(req.body).then(data=>res.send(data));
+        authService.register(req.body).then(()=>{
+            authService.login(req.body).then(token=>{
+                res.cookie('x-access-token',token);
+                res.json({ success: true });
+            }).catch(err=>res.send(err));
+        })
+    });
+    router.post('/login', (req, res) =>
+    {
+        authService.login(req.body).then(token=>{
+             res.cookie('x-access-token',token);
+             res.json({ success: true });
+        }).catch(err=>res.send(err));
     });
     return router;
 }
