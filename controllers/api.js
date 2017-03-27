@@ -1,11 +1,11 @@
 const express = require('express');
 
-module.exports = (authService, config) => {
+module.exports = (userService) => {
     const router = express.Router();
-    /*const authController = require('./auth')(authService);
+    const userController = require('./user')(userService);
    
 
-    router.use('/auth', authController);*/
+    router.use('/user', userController);
 
     return router;
 };
