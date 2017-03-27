@@ -1,0 +1,8 @@
+{
+  "db": {
+    "host": "127.0.0.1",
+    "name": "pskp_lab08",
+    "user": "root",
+    "password": ""
+  }
+}

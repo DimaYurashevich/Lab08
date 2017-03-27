@@ -1,0 +1,25 @@
+{
+  "name": "pskp_kp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DimaYurashevich/Lab08.git"
+  },
+  "author": "ydn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DimaYurashevich/PSKP/issues"
+  },
+  "homepage": "https://github.com/DimaYurashevich/PSKP#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.14.1",
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.2"
+  }
+}
