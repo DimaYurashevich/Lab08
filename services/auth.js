@@ -14,28 +14,28 @@ module.exports = (userRepository, errors) => {
                 if(user!=null) 
                 {
                     console.log("user");
-                    throw errors.wrongCredentials;
+                    throw(errors.wrongCredentials);
                 }
                 else {
                     return new Promise((resolve, reject) => {
                         bcrypt.hash(data.password, saltRounds, function(err, hash){
                         if (err) {
-                            throw err;
+                            return reject(err);
                         } 
-                        else(resolve(hash));
+                        else return resolve(hash);
                     })
                 })
             }})
             .then(hash=>{
                 console.log("hash");
-                userRepository.create({
+                return userRepository.create({
                     login: data.login,
                     password: hash,
                     money: 0
                 })
             })
-            .then(user=>resolve(user))
-            .catch(reject);
+            .then(data=>{ console.log(data); resolve({success: "user registr"})})
+            .catch(data=>reject(data));
         })
     }
     function login(data)
@@ -44,6 +44,7 @@ module.exports = (userRepository, errors) => {
             userRepository.findOne({where:{login: data.login},
                                     attributes: ['id','login','password']})
             .then(user=>{
+                if(user==null) reject("user not found");
                 bcrypt.compare(data.password, user.password , function(err, rez){
                     if (rez==true){
                         resolve(jwt.sign({ __user_id: user.id,

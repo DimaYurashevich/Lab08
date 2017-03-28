@@ -1,31 +1,26 @@
 const express = require('express');
 var jwt = require('jsonwebtoken');
-module.exports = (userService) => {
+module.exports = (userService, promiseHandler) => {
     const router = express.Router();
     console.log("controller User");
     router.get('/:id',(req, res) =>
     {
-        getId(req.cookies["x-access-token"])
-        .then(id=>userService.readUser(id,req.params.id))
-        .then(data=>res.send(data));   
+        promiseHandler(res,getId(req.cookies["x-access-token"])
+        .then(id=>userService.readUser(id,req.params.id)));   
     });
     router.put('/:id',(req, res) =>
     {
-        getId(req.cookies["x-access-token"])
-        .then(id=>userService.updateUser(id,req.params.id,req.body))
-        .then(data=>res.send(data))
-        .catch(err=>res.send(err));
+        promiseHandler(res,getId(req.cookies["x-access-token"])
+        .then(id=>userService.updateUser(id,req.params.id,req.body)));
     });
     router.get('/',(req, res) =>
     {
-        userService.readAllUser().then(data=>res.send(data));
+        promiseHandler(res,userService.readAllUser());
     });
     router.delete('/:id',(req, res) =>
     {
-        getId(req.cookies["x-access-token"])
-        .then(id=>userService.deleteUser(id, req.params.id))
-        .then(data=>res.redirect("/api/auth/logout"))
-        .catch(err=>res.send(err));
+        promiseHandler(res,getId(req.cookies["x-access-token"])
+        .then(id=>userService.deleteUser(id, req.params.id)));
     });
 
     function getId(token)

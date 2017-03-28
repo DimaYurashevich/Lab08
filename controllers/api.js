@@ -2,9 +2,9 @@ const express = require('express');
 
 module.exports = (userService, authService, domainService) => {
     const router = express.Router();
-    const userController = require('./user')(userService);
-    const authController = require('./auth')(authService);
-    const domainController= require('./domain')(domainService);
+    const userController = require('./user')(userService, promiseHandler);
+    const authController = require('./auth')(authService, promiseHandler);
+    const domainController= require('./domain')(domainService, promiseHandler);
    
 
     router.use('/user', userController);

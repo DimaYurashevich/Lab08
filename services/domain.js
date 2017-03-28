@@ -52,9 +52,10 @@ module.exports = (domainRepository, errors) => {
                             ip: ip,
                             statusPay: false,
                             userId: userId
-                        }).then(resolve({status: "Domain registr"}));
+                        })
+                        .then(resolve({status: "Domain registr"}));
                     else
-                        reject("This domain or ip alreadi regist");
+                        reject({err: "This domain or ip alreadi regist"});
                 })
             })
         }
@@ -69,7 +70,7 @@ module.exports = (domainRepository, errors) => {
                     else if(dmn.statusPay==true) throw("Already pay");
                     else{
                         console.log("fbi");
-                        userRepository.findById(idUser,{attributes:["money"]})
+                        return userRepository.findById(idUser,{attributes:["id","money"]})
                     }
                 })
                 .then(user=>{
@@ -86,7 +87,7 @@ module.exports = (domainRepository, errors) => {
                 })
                 .catch((err)=>{
                     console.log(err);
-                    reject});
+                    reject(err)});
             })
         }
     }
