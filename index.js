@@ -1,6 +1,7 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 
 const config = require('./config');
@@ -14,6 +15,7 @@ const apiController = require('./controllers/api')(userService, authService);
 const app = express();
 
 app.use(express.static('public'));
+app.use(cookieParser("pskpdm"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 

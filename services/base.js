@@ -64,15 +64,14 @@ function BaseService(repository, errors) {
     function baseUpdate(id, data) {
         return new Promise((resolve, reject) => {
             repository.update(data, { where: { id: id }})
-                .then(() => {
-                    return self.read(data.id);
-                })
-                .then(resolve).catch(reject);
+                .then(() => resolve({ success: true }))
+                .catch(reject);
         });
     }
 
     function del(id) {
         return new Promise((resolve, reject) => {
+            console.log("awer");
             repository.destroy({ where: { id: id } })
                 .then(() => resolve({ success: true }))
                 .catch(reject);

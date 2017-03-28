@@ -41,10 +41,11 @@ module.exports = (userRepository, errors) => {
         function deleteUser(id, idUser)
         {
             return new Promise((resolve, reject) => {
-                if(id!=idUser) reject(errors.accessDenied)
+                if(id!=idUser) throw (errors.accessDenied)
                 else{
-                    self.del(id)
-                    .then(resolve)
+                    console.log("delllll");
+                    self.delete(id)
+                    .then(data=>resolve(data))
                     .catch(reject);
                 }
             })
