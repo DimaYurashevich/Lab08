@@ -34,7 +34,7 @@ module.exports = (userRepository, errors) => {
         {
             return new Promise((resolve, reject) => {
                 userRepository.findAll({attributes: ['id','login']})
-                .then(users=>resolve(users))
+                .then(users=>resolve({user: users}))
                 .catch(reject);
             });
         }
@@ -52,6 +52,7 @@ module.exports = (userRepository, errors) => {
         }
         function readUser(id, idUser)
         {
+            console.log(id);
             return new Promise((resolve, reject) => {
                 var param;
                 if(id==idUser) param =['id','login','money','createdAt'];

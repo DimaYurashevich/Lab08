@@ -27,14 +27,13 @@ module.exports = (userRepository, errors) => {
                 })
             }})
             .then(hash=>{
-                console.log("hash");
                 return userRepository.create({
                     login: data.login,
                     password: hash,
                     money: 0
                 })
             })
-            .then(data=>{ console.log(data); resolve({success: "user registr"})})
+            .then(data=>{ resolve({success: "user registr"})})
             .catch(data=>reject(data));
         })
     }

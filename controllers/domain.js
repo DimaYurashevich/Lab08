@@ -6,23 +6,33 @@ module.exports = (domainService, promiseHandler) => {
 
     router.get('/check',(req, res) =>
     {
-        promiseHandler(res,domainService.checkDomain(req.query.domain));    
+        promiseHandler(res,
+        domainService.checkDomain(req.query.domain),
+        req.headers['content-type']);    
     });
     router.post('/',(req, res) =>
     {
-        promiseHandler(res,domainService.checkDomain(req.body.domain)
+        promiseHandler(res,
+        domainService.checkDomain(req.body.form.domain)
         .then(data=>{
             if(data.status=="true"){
                 return getId(req.cookies["x-access-token"]);
             }
             else throw("error");
         })
-        .then(id=>domainService.registr(req.body.domain, req.body.ip, id)));
+        .then(id=>domainService.registr(req.body.form.domain, req.body.form.ip, id)),
+        req.headers['content-type']);
     });
     router.post('/pay',(req, res) =>
     {
         promiseHandler(res,getId(req.cookies["x-access-token"])
-        .then(id=>domainService.pay(req.body.id, id)));
+        .then(id=>domainService.pay(req.body.form.id, id)),
+        req.headers['content-type']);
+    });
+    router.post('/getxml',(req, res) =>
+    {
+        console.log(req.body.domain);
+        res.send("OK");
     });
     function getId(token)
     {

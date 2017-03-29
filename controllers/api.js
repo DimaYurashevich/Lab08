@@ -1,4 +1,12 @@
 const express = require('express');
+const EasyXml = require('easyxml');
+
+const serializer = new EasyXml({
+    singularize: true,
+    rootElement: 'response',
+    dateFormat: 'ISO',
+    manifest: true
+});
 
 module.exports = (userService, authService, domainService) => {
     const router = express.Router();
@@ -14,8 +22,18 @@ module.exports = (userService, authService, domainService) => {
     return router;
 };
 
-function promiseHandler(res, promise) {
+function promiseHandler(res, promise, typeReq) {
+    console.log(typeReq);
     promise
-        .then((data) => res.json(data))
+        .then((data) => {
+            switch(typeReq)
+            {
+                case "application/json": res.json(data); break;
+                case "application/xml": {
+                    res.header('Content-Type', 'text/xml');
+                    res.send(serializer.render(data));
+                    break};
+            }
+        })
         .catch((err) => res.error(err));
 }
