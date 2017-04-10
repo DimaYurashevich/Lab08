@@ -13,6 +13,8 @@ const authService = require('./services/auth')(dbcontext.user, errors);
 const domainService = require('./services/domain')(dbcontext.domain,dbcontext.user, errors);
 const apiController = require('./controllers/api')(userService, authService, domainService);
 
+const auth=require('./utils/auth')(errors);
+
 const app = express();
 
 app.use(express.static('public'));
@@ -28,6 +30,7 @@ app.use(bodyParser.xml({
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use('/api',auth);
 app.use('/api', apiController);
 
 dbcontext.sequelize.sync()

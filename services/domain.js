@@ -17,15 +17,20 @@ module.exports = (domainRepository, errors) => {
 
         function checkDomain(domain) {
             return new Promise((resolve, reject) => {
+                if(!(/^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/.test(domain))) return reject("Error domain");
                 var options = {
                     headers: {  'Origin': 'https://www.namecheap.com/',
                                 'Content-Type': 'application/x-www-form-urlencoded' }
                 }
                 var url='https://api.domainr.com/v2/status?domain=' + domain + '&client_id=fb7aca826b084569a50cfb3157e924ae';
                 needle.get(url,options, function(err, resp) {
-                    if(err) reject(err);
+                    if(err) {
+                        console.log(err);
+                        return reject(err);
+                    }
                     if((resp.body.status[0].status).indexOf("inactive")>=0)
                     {
+                        console.log("needle OK");
                         domainRepository.findOne({where: {domain:domain}})
                         .then(data=>{
                             if(data==null) resolve({status: "true"})
@@ -40,22 +45,29 @@ module.exports = (domainRepository, errors) => {
         }
         function registr(domain, ip,userId)
         {
+            console.log("registr serv");
             return new Promise((resolve, reject) => {
                 Promise.all([
                     domainRepository.findOne({where:{domain:domain}}),
                     domainRepository.findOne({where:{ip:ip}}),
                 ]).spread((rezDomain,rezIp)=>
                 {
+                    console.log(rezDomain);
+                    console.log(rezIp);
                     if(rezDomain==null&&rezIp==null)
+                    {
+                        console.log(typeof ip);
                         domainRepository.create({
                             domain: domain,
                             ip: ip,
                             statusPay: false,
                             userId: userId
                         })
-                        .then(resolve({status: "Domain registr"}));
+                        .then((data)=>resolve({status: "Domain registr"}))
+                        .catch((data)=>{reject(data)});
+                    }
                     else
-                        reject({err: "This domain or ip alreadi regist"});
+                        reject("This domain or ip alreadi regist");
                 })
             })
         }

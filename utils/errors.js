@@ -39,5 +39,10 @@ module.exports = {
         message: 'Access denied',
         code: 'access_denied',
         status: 403
+    },
+   errorData: {
+        message: 'Error_data',
+        code: 'access_denied',
+        status: 403
     }
 };

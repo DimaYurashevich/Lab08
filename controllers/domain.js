@@ -15,10 +15,11 @@ module.exports = (domainService, promiseHandler) => {
         promiseHandler(res,
         domainService.checkDomain(req.body.form.domain)
         .then(data=>{
+            console.log(data);
             if(data.status=="true"){
                 return getId(req.cookies["x-access-token"]);
             }
-            else throw("error");
+            else throw("error. Domain already use");
         })
         .then(id=>domainService.registr(req.body.form.domain, req.body.form.ip, id)),
         req.headers['content-type']);

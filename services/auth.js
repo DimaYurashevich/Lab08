@@ -9,12 +9,17 @@ module.exports = (userRepository, errors) => {
     function register(data)
     {
         return new Promise((resolve, reject) => {
-            userRepository.findOne({where:{login:data.login}})
+           userRepository.findOne({where:{login:data.login}})
             .then(user=>{
                 if(user!=null) 
                 {
                     console.log("user");
                     throw(errors.wrongCredentials);
+                }
+                else if(data.login.length<3||data.password.length<3)
+                {
+                    console.log("err data");
+                    throw(errors.errorData);
                 }
                 else {
                     return new Promise((resolve, reject) => {
@@ -30,7 +35,7 @@ module.exports = (userRepository, errors) => {
                 return userRepository.create({
                     login: data.login,
                     password: hash,
-                    money: 0
+                    money: 20
                 })
             })
             .then(data=>{ resolve({success: "user registr"})})

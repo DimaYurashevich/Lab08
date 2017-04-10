@@ -11,6 +11,9 @@ module.exports = (Sequelize, sequelize) =>{
         },
         ip:{
             type: Sequelize.STRING,
+            validate:{
+                isIP:true
+            },
             allowNull: false
         },
         statusPay:{
